@@ -30,8 +30,8 @@ func (bt *BTree) First() *leafNode {
 func (bt *BTree) Insert(key int, value string) {
 	_, oldIndex, leaf := search(bt.root, key)
 	p := leaf.parent()
-	mid, bump := leaf.insert(key, value)
 
+	mid, bump := leaf.insert(key, value)
 	if !bump {
 		return
 	}
@@ -42,8 +42,7 @@ func (bt *BTree) Insert(key int, value string) {
 	p.kcs[oldIndex].child = leaf.next
 	leaf.next.setParent(p)
 
-	interior := p
-	interiorP := p.parent()
+	interior, interiorP := p, p.parent()
 
 	for {
 		var oldIndex int
@@ -65,15 +64,15 @@ func (bt *BTree) Insert(key int, value string) {
 			newNode.setParent(interiorP)
 
 			midNode = interior
-
-			interior = interiorP
-			interiorP = interior.parent()
 		} else {
 			bt.root = newInteriorNode(nil, newNode)
-			newNode.p = bt.root
+			newNode.setParent(bt.root)
+
 			bt.root.insert(mid, interior)
 			return
 		}
+
+		interior, interiorP = interiorP, interior.parent()
 	}
 }
 

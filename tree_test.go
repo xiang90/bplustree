@@ -27,6 +27,7 @@ func TestSearch(t *testing.T) {
 		bt.Insert(i, fmt.Sprintf("%d", i))
 	}
 
+	start := time.Now()
 	for i := 1; i < testCount; i++ {
 		v, ok := bt.Search(i)
 		if !ok {
@@ -36,6 +37,7 @@ func TestSearch(t *testing.T) {
 			t.Errorf("search: want = %d, got = %s", i, v)
 		}
 	}
+	fmt.Println(time.Now().Sub(start))
 }
 
 func verifyTree(b *BTree, count int, t *testing.T) {

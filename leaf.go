@@ -66,9 +66,10 @@ func (l *leafNode) insert(key int, value string) (int, bool) {
 		return 0, false
 	}
 
-	leaf, next := l.split()
+	next := l.split()
+
 	if key < next.kvs[0].key {
-		leaf.insert(key, value)
+		l.insert(key, value)
 	} else {
 		next.insert(key, value)
 	}
@@ -76,7 +77,7 @@ func (l *leafNode) insert(key int, value string) (int, bool) {
 	return next.kvs[0].key, true
 }
 
-func (l *leafNode) split() (*leafNode, *leafNode) {
+func (l *leafNode) split() *leafNode {
 	next := newLeafNode(nil)
 
 	copy(next.kvs[0:], l.kvs[l.count/2+1:])
@@ -87,7 +88,7 @@ func (l *leafNode) split() (*leafNode, *leafNode) {
 	l.count = l.count/2 + 1
 	l.next = next
 
-	return l, next
+	return next
 }
 
 func (l *leafNode) full() bool { return l.count == MaxKV }

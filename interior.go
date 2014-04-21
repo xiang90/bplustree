@@ -74,10 +74,17 @@ func (in *interiorNode) insert(key int, child node) (int, *interiorNode, bool) {
 		return 0, nil, false
 	}
 
-	// insert the new node into the empty slot and sort
+	// insert the new node into the empty slot
 	in.kcs[MaxKC].key = key
 	in.kcs[MaxKC].child = child
 	child.setParent(in)
+
+	next, midKey := in.split()
+
+	return midKey, next, true
+}
+
+func (in *interiorNode) split() (*interiorNode, int) {
 	sort.Sort(&in.kcs)
 
 	// get the mid info
@@ -100,5 +107,5 @@ func (in *interiorNode) insert(key int, child node) (int, *interiorNode, bool) {
 	in.kcs[in.count-1].child = midChild
 	midChild.setParent(in)
 
-	return midKey, next, true
+	return next, midKey
 }
