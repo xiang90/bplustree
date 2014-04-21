@@ -19,22 +19,6 @@ func newBTree() *BTree {
 	}
 }
 
-// func (bt *BTree) search(key int) (int, *leafNode, ok) {
-// 	i, ok := n.find(key)
-// 	if !ok {
-// 		return nil, n.(*leafNode)
-// 	}
-
-// 	switch t := n.(type) {
-// 	case *leafNode:
-// 		return &t.kvs[i], t
-// 	case *interiorNode:
-// 		return search(t.kcs[i].child, key)
-// 	default:
-// 		panic("wrong type")
-// 	}
-// }
-
 func (bt *BTree) insert(key int, value string) {
 	_, leaf := search(bt.root, key)
 	p := leaf.parent()
