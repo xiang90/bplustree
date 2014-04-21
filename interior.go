@@ -9,6 +9,7 @@ type kc struct {
 	child node
 }
 
+// one empty slot for split
 type kcs [MaxKC + 1]kc
 
 func (a *kcs) Len() int { return len(a) }
@@ -64,10 +65,12 @@ func (in *interiorNode) insert(key int, child node) (int, *interiorNode, bool) {
 
 	if !in.full() {
 		copy(in.kcs[i+1:], in.kcs[i:in.count])
+
 		in.kcs[i].key = key
 		in.kcs[i].child = child
-		in.count++
 		child.setParent(in)
+
+		in.count++
 		return 0, nil, false
 	}
 

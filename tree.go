@@ -20,10 +20,8 @@ func newBTree() *BTree {
 }
 
 func (bt *BTree) insert(key int, value string) {
-	_, leaf := search(bt.root, key)
+	_, oldIndex, leaf := search(bt.root, key)
 	p := leaf.parent()
-	oldIndex, _ := p.find(key)
-
 	mid, bump := leaf.insert(key, value)
 
 	if !bump {
