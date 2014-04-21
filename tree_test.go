@@ -11,12 +11,31 @@ func TestInsert(t *testing.T) {
 	bt := newBTree()
 
 	start := time.Now()
-	for i := 1; i <= testCount; i++ {
-		bt.insert(i, "")
+	for i := testCount; i > 0; i-- {
+		bt.Insert(i, "")
 	}
 	fmt.Println(time.Now().Sub(start))
 
 	verifyTree(bt, testCount, t)
+}
+
+func TestSearch(t *testing.T) {
+	testCount := 1000000
+	bt := newBTree()
+
+	for i := testCount; i > 0; i-- {
+		bt.Insert(i, fmt.Sprintf("%d", i))
+	}
+
+	for i := 1; i < testCount; i++ {
+		v, ok := bt.Search(i)
+		if !ok {
+			t.Errorf("search: want = true, got = false")
+		}
+		if v != fmt.Sprintf("%d", i) {
+			t.Errorf("search: want = %d, got = %s", i, v)
+		}
+	}
 }
 
 func verifyTree(b *BTree, count int, t *testing.T) {
@@ -27,6 +46,11 @@ func verifyTree(b *BTree, count int, t *testing.T) {
 	}
 
 	leftMost := findLeftMost(b.root)
+
+	if leftMost != b.first {
+		t.Errorf("bt.first: want = %p, got = %p", b.first, leftMost)
+	}
+
 	verifyLeaf(leftMost, count, t)
 }
 
@@ -49,8 +73,8 @@ func verifyRoot(b *BTree, t *testing.T) {
 func verifyNode(n node, parent *interiorNode, t *testing.T) {
 	switch nn := n.(type) {
 	case *interiorNode:
-		if nn.count < MaxKC/2+1 {
-			t.Errorf("interior.min.child: want >= %d, got = %d", MaxKC/2+1, nn.count)
+		if nn.count < MaxKC/2 {
+			t.Errorf("interior.min.child: want >= %d, got = %d", MaxKC/2, nn.count)
 		}
 
 		if nn.count > MaxKC {
@@ -81,8 +105,8 @@ func verifyNode(n node, parent *interiorNode, t *testing.T) {
 			t.Errorf("leaf.parent: want = %p, got = %p", parent, nn.parent())
 		}
 
-		if nn.count < MaxKV/2+1 {
-			t.Errorf("leaf.min.child: want >= %d, got = %d", MaxKV/2+1, nn.count)
+		if nn.count < MaxKV/2 {
+			t.Errorf("leaf.min.child: want >= %d, got = %d", MaxKV/2, nn.count)
 		}
 
 		if nn.count > MaxKV {

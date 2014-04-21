@@ -47,7 +47,7 @@ func newInteriorNode(p *interiorNode, largestChild node) *interiorNode {
 }
 
 func (in *interiorNode) find(key int) (int, bool) {
-	c := func(i int) bool { return in.kcs[i].key >= key }
+	c := func(i int) bool { return in.kcs[i].key > key }
 
 	i := sort.Search(in.count-1, c)
 

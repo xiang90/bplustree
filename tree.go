@@ -2,6 +2,7 @@ package bplustree
 
 type BTree struct {
 	root     *interiorNode
+	first    *leafNode
 	leaf     int
 	interior int
 	height   int
@@ -13,13 +14,20 @@ func newBTree() *BTree {
 	leaf.p = r
 	return &BTree{
 		root:     r,
+		first:    leaf,
 		leaf:     1,
 		interior: 1,
 		height:   2,
 	}
 }
 
-func (bt *BTree) insert(key int, value string) {
+// first returns the first leafNode
+func (bt *BTree) First() *leafNode {
+	return bt.first
+}
+
+// insert inserts a (key, value) into the B+ tree
+func (bt *BTree) Insert(key int, value string) {
 	_, oldIndex, leaf := search(bt.root, key)
 	p := leaf.parent()
 	mid, bump := leaf.insert(key, value)
@@ -67,4 +75,15 @@ func (bt *BTree) insert(key int, value string) {
 			return
 		}
 	}
+}
+
+// Search searches the key in B+ tree
+// If the key exists, it returns the value of key and true
+// If the key does not exist, it returns an empty string and false
+func (bt *BTree) Search(key int) (string, bool) {
+	kv, _, _ := search(bt.root, key)
+	if kv == nil {
+		return "", false
+	}
+	return kv.value, true
 }
