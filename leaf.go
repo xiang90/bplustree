@@ -2,6 +2,7 @@ package bplustree
 
 import (
 	//"log"
+	"fmt"
 	"sort"
 )
 
@@ -15,6 +16,14 @@ type kvs [MaxKV]kv
 func (a *kvs) Len() int           { return len(a) }
 func (a *kvs) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a *kvs) Less(i, j int) bool { return a[i].key < a[j].key }
+
+func (a *kvs) String() string {
+	var s string
+	for _, kv := range a {
+		s += fmt.Sprintf("%d\t", kv.key)
+	}
+	return s
+}
 
 type leafNode struct {
 	kvs   kvs

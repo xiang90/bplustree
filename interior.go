@@ -1,6 +1,7 @@
 package bplustree
 
 import (
+	"fmt"
 	"sort"
 )
 
@@ -26,6 +27,14 @@ func (a *kcs) Less(i, j int) bool {
 	}
 
 	return a[i].key < a[j].key
+}
+
+func (a *kcs) String() string {
+	var s string
+	for _, kc := range a {
+		s += fmt.Sprintf("%d\t", kc.key)
+	}
+	return s
 }
 
 type interiorNode struct {
