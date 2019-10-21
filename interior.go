@@ -1,6 +1,7 @@
 package bplustree
 
 import (
+	"fmt"
 	"sort"
 )
 
@@ -26,6 +27,14 @@ func (a *kcs) Less(i, j int) bool {
 	}
 
 	return a[i].key < a[j].key
+}
+
+func (a *kcs) String() string {
+	var s string
+	for _, kc := range a {
+		s += fmt.Sprintf("%d\t", kc.key)
+	}
+	return s
 }
 
 type interiorNode struct {
@@ -103,8 +112,6 @@ func (in *interiorNode) split() (*interiorNode, int) {
 
 	// modify the original node
 	in.count = midIndex + 1
-	in.kcs[in.count-1].key = 0
-	in.kcs[in.count-1].child = midChild
 	midChild.setParent(in)
 
 	return next, midKey
