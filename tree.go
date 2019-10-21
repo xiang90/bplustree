@@ -72,7 +72,7 @@ func (bt *BTree) Insert(key int, value string) {
 			return
 		}
 
-		interior, interiorP = interiorP, interior.parent()
+		interior, interiorP = interiorP, interiorP.parent()
 	}
 }
 
