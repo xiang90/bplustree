@@ -112,8 +112,6 @@ func (in *interiorNode) split() (*interiorNode, int) {
 
 	// modify the original node
 	in.count = midIndex + 1
-	in.kcs[in.count-1].key = 0
-	in.kcs[in.count-1].child = midChild
 	midChild.setParent(in)
 
 	return next, midKey
