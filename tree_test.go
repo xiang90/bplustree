@@ -95,10 +95,6 @@ func verifyNode(n node, parent *interiorNode, t *testing.T) {
 			}
 			last = key
 
-			if i == nn.count-1 && key != 0 {
-				t.Errorf("interior.last.key: want = 0, got = %d", key)
-			}
-
 			verifyNode(nn.kcs[i].child, nn, t)
 		}
 

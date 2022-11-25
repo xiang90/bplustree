@@ -21,3 +21,9 @@ _testmain.go
 
 *.exe
 *.test
+.idea/bplustree.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/watcherTasks.xml
+.idea/workspace.xml
